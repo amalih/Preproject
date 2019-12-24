@@ -29,17 +29,17 @@ REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
 MINIBATCH_SIZE = 256 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Nomoto-Eps025_010_005-Epochs3-Eps5000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256'
+MODEL_NAME = 'Nomoto-Eps015-Epochs1-Eps5000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 23
 #MODEL_FILE = 'models/Nomoto-Eps025_010_005-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256__1256.46max__164.36avg___-1.00min__1576707607.model'
 
 # Environment settings
-EPISODE_START = 3350
+EPISODE_START = 0#3350
 #EPISODES = [2000, 2000, 2000]
 EPISODES = [5000]
-EPOCHS = 3
+EPOCHS = 1
 
 # Exploration settings
 EPSILON = [0.15]
