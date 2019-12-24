@@ -33,7 +33,7 @@ MODEL_NAME = 'Nomoto-Eps025_010_005-Epochs3-Eps5000-Steps1500-linear-CNN_400_300
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 23
-MODEL_FILE = 'models/Nomoto-Eps025_010_005-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256__1256.46max__164.36avg___-1.00min__1576707607.model'
+#MODEL_FILE = 'models/Nomoto-Eps025_010_005-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256__1256.46max__164.36avg___-1.00min__1576707607.model'
 
 # Environment settings
 EPISODE_START = 3350
@@ -94,8 +94,8 @@ class DQN_Agent:
     def __init__(self):
 
         # Main model, used for training
-        #self.model = self.create_model()
-        self.model = load_model(MODEL_FILE)
+        self.model = self.create_model()
+        #self.model = load_model(MODEL_FILE)
 
         # Target network
         self.target_model = self.create_model()
