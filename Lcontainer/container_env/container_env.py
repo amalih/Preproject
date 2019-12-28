@@ -251,8 +251,8 @@ class ContainerEnv(gym.Env):
             reward = 1-(1/10)*abs(self.ct_error)
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
-            if self.ct_error_d > 0:
-                reward/2
+            #if self.ct_error_d > 0:
+            #    reward/2
 
             return reward
 
