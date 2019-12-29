@@ -32,12 +32,12 @@ UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
 MODEL_NAME = 'LContainer-Eps03_02_01-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_200_100-YEMAX500-LR0001-Outputs29-UpdateTarget1-Triangle10-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 29
+ACTION_SPACE_VALUES = 23
 MODEL_FILE = 'xx'
 
 # Environment settings
 EPISODE_START = 0
-EPISODES = [2000,2000, 2000]
+EPISODES = [1000,2000, 2000]
 EPOCHS = 3
 
 # Exploration settings
