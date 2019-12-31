@@ -243,7 +243,7 @@ class ContainerEnv(gym.Env):
             return -1
 
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/2 and abs(self.ct_error) < 10:
+        if abs(self.pf_psi) < math.pi/2 and abs(self.ct_error) < 20:
 
             #std = 20
             #amp = 1
