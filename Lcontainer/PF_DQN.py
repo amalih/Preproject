@@ -29,7 +29,7 @@ REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 64 #inimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'LContainer-Eps03_02_01-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_200_100-YEMAX500-LR00001-Outputs23-UpdateTarget1-Triangle10-MB64'
+MODEL_NAME = 'LContainer-Eps08_03_02_01-Epochs3-Eps200_1000_2000_2000-Steps1500-linear-CNN_300_200_100-YEMAX800-LR001-Outputs23-UpdateTarget1-Triangle10-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 23
@@ -37,14 +37,16 @@ MODEL_FILE = 'xx'
 
 # Environment settings
 EPISODE_START = 0
-EPISODES = [1000,2000, 2000]
-EPOCHS = 3
+EPISODES = [300,1000,2000,2000]
+EPOCHS = 4
+
+MAX_CTE = 800
 
 # Exploration settings
-EPSILON = [0.3,0.2,0.1]  # not a constant, going to be decayed
+EPSILON = [0.8,0.3,0.2,0.1]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.01
-LEARNING_RATE = 0.0001
+LEARNING_RATE = 0.01
 
 
 #  Stats settings
@@ -231,7 +233,7 @@ def run_experiment(agent):
 
             # Reset environment and get initial state, might have to reshape
             curr_state = env.reset()
-            y_init = curr_state[0]*200
+            y_init = curr_state[0]*MAX_CTE
             psi_init = curr_state[2]*180
 
             while not done and step < STEPS:
