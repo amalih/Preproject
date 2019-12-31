@@ -249,7 +249,7 @@ class ContainerEnv(gym.Env):
             #amp = 1
             #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-            reward = 1-(1/10)*abs(self.ct_error)
+            reward = 1-(1/20)*abs(self.ct_error)
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
             #if self.ct_error_d > 0:
