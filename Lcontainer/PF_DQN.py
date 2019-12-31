@@ -176,7 +176,7 @@ class DQN_Agent:
 
     def evaluate(self, ep):
 
-        psi_array = [math.pi/2, -math.pi/5, 0, math.pi/6, 0]
+        psi_array = [math.pi/4, -math.pi/5, 0, math.pi/6, 0]
         #psi_c_array = [-10, 20, -40, 90, 0]
         psi_c_array = [0,0,0,0,0]
         dist_array = [-50, 75, -100, 150, 0]
