@@ -292,7 +292,7 @@ class Ship(object):
         self.time  = 0
 
 
-        self.container_state = [SPEED, 0, 0, x_init, y_init, psi_init, 0, 0,0]
+        self.container_state = [SPEED, 0, 0, x_init, y_init, psi_init, 0, 0,0, SHAFT_VEL]
 
 class Controller(object):
     def __init__(self, ship):
