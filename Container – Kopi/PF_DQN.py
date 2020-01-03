@@ -32,7 +32,7 @@ UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
 MODEL_NAME = 'LContainer-Eps02_01-Epochs2-Eps2000_2000-Steps1500-linear-CNN_400_300-YEMAX2000-LR0001-Inputs4-Outputs27-UpdateTarget1-Bell20-MB264'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 4
-ACTION_SPACE_VALUES = 29
+ACTION_SPACE_VALUES = 27
 MODEL_FILE = 'xx'
 
 # Environment settings
