@@ -7,7 +7,7 @@ import gym
 import container_env
 import keras.backend.tensorflow_backend as backend
 from keras.models import Sequential, load_model
-from keras.layers import Dense, Dropout, MaxPooling1D, Activation, Flatten, BatchNormalization
+from keras.layers import Dense, Dropout, MaxPooling1D, Activation, Flatten
 from keras.optimizers import Adam
 from keras.callbacks import TensorBoard
 from keras.initializers import glorot_normal
@@ -16,7 +16,7 @@ from collections import deque
 import time
 import random
 import os
-from PIL import Image
+#from PIL import Image
 
 
 # Constants
@@ -26,22 +26,24 @@ m2km = 1/1000
 
 DISCOUNT = 0.9
 REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
-MINIBATCH_SIZE = 256 # How many steps (samples) to use for training
+MIN_REPLAY_MEMORY_SIZE = 264 #inimum number of steps in a memory to start training
+MINIBATCH_SIZE = 264 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Container-Eps02_015_01-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_400_300-YEMAX500-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256'
+MODEL_NAME = 'LContainer-Eps02_01-Epochs2-Eps2000_2000-Steps1500-linear-CNN_400_300-YEMAX2000-LR0001-Outputs29-UpdateTarget1-TriangleBell20-MB264'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 23
+ACTION_SPACE_VALUES = 29
 MODEL_FILE = 'xx'
 
 # Environment settings
 EPISODE_START = 0
-EPISODES = [2000, 2000, 2000]
-EPOCHS = 3
+EPISODES = [2000,2000]
+EPOCHS = 2
+
+MAX_CTE = 2000
 
 # Exploration settings
-EPSILON = [0.2,0.15,0.1]  # not a constant, going to be decayed
+EPSILON = [0.2,0.1]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.01
 LEARNING_RATE = 0.001
@@ -49,10 +51,10 @@ LEARNING_RATE = 0.001
 
 #  Stats settings
 AGGREGATE_STATS_EVERY = 50  # episodes
-SHOW_PREVIEW = True
+SHOW_PREVIEW = False
 SHOW_EVERY = 1
-SAVE_MODEL = False
-STEPS = 500
+SAVE_MODEL = True
+STEPS = 1500
 
 
 # Own Tensorboard class
@@ -113,9 +115,9 @@ class DQN_Agent:
 
         model = Sequential()
 
-        model.add(Dense(400, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu', kernel_initializer='glorot_normal'))
+        model.add(Dense(400, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
         #model.add(BatchNormalization())
-        model.add(Dense(300, activation='relu', kernel_initializer='glorot_normal'))
+        model.add(Dense(300, activation='relu'))
         #model.add(Dense(100, activation='relu'))
         model.add(Flatten())
         model.add(Dense(ACTION_SPACE_VALUES, activation='linear'))
@@ -174,8 +176,9 @@ class DQN_Agent:
 
     def evaluate(self, ep):
 
-        psi_array = [math.pi/2, -math.pi/5, 0, math.pi/6, 0]
-        psi_c_array = [-10, 20, -40, 90, 0]
+        psi_array = [math.pi/4, -math.pi/5, 0, math.pi/6, 0]
+        #psi_c_array = [-10, 20, -40, 90, 0]
+        psi_c_array = [0,0,0,0,0]
         dist_array = [-50, 75, -100, 150, 0]
         average_reward = 0
 
@@ -189,10 +192,12 @@ class DQN_Agent:
                 action = np.argmax(agent.get_qs_target(curr_state))
                 new_state, reward, done, _ = env.step(action)
                 curr_state = new_state
+                #print(f'Evaluative reward: {reward}')
 
                 average_reward += reward
                 ep_reward += reward
                 step += 1
+            #print(f'Ep reward: {ep_reward}')
 
             print(f'Evaluative reward for psi = {psi_array[i]} and starting position in y = {dist_array[i]} was: {ep_reward}')
 
@@ -214,8 +219,8 @@ def run_experiment(agent):
             prev_eps = 0
 
             if epoch > 0:
-                for i in range(epoch):
-                    prev_eps += EPISODES[epoch]
+                for i in range(0,epoch):
+                    prev_eps += EPISODES[i]
             curr_ep = EPISODE_START + prev_eps + episode
 
             # Update tensorboard step every episode
@@ -228,11 +233,10 @@ def run_experiment(agent):
 
             # Reset environment and get initial state, might have to reshape
             curr_state = env.reset()
-            y_init = curr_state[0]*200
-            psi_init = curr_state[2]*180
+            y_init = curr_state[0]*MAX_CTE
+            psi_init = curr_state[2]*180*rad2deg
 
             while not done and step < STEPS:
-
 
                 if np.random.random() > epsilon:
                     # Get action from Q table
@@ -242,6 +246,7 @@ def run_experiment(agent):
                     action = np.random.randint(0,ACTION_SPACE_VALUES)
 
                 new_state, reward, done, _ = env.step(action)
+                #print(reward)
 
                 # Every step we update replay memory and train main network
                 agent.update_replay_memory([curr_state, action, reward, new_state, done])
