@@ -27,6 +27,7 @@ MAX_INIT_PSI = math.pi/2
 
 # speed
 SPEED = 7
+SHAFT_VEL = 70
 OFFSET = 0
 
 def rot_matrix(alpha):
@@ -315,7 +316,7 @@ class Controller(object):
 
         #ypos_p_prev = rot_T[1][0]*pf_pos[0] + rot_T[1][1]*pf_pos[1]
 
-        xdot, _ = container(ship.container_state, [delta_c,SPEED], SPEED)
+        xdot, _ = container(ship.container_state, [delta_c,SHAFT_VEL])
 
         for i in range(len(ship.container_state)):
             ship.container_state[i] = ship.container_state[i] + h*xdot[i]
