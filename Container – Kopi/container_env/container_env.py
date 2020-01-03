@@ -5,7 +5,7 @@ import math
 import numpy as np
 import random
 import gym
-from container_model import Lcontainer
+from container_model import container
 
 # Constants
 deg2rad = math.pi/180
