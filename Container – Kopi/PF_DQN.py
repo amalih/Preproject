@@ -199,7 +199,7 @@ class DQN_Agent:
                 step += 1
             #print(f'Ep reward: {ep_reward}')
 
-            print(f'Evaluative reward for psi = {psi_array[i]} and starting position in y = {dist_array[i]} was: {ep_reward}')
+            print(f'Evaluative reward for psi = {psi_array[i]*rad2deg} and starting position in y = {dist_array[i]} was: {ep_reward}')
 
         return average_reward/len(psi_array)
 
@@ -234,7 +234,7 @@ def run_experiment(agent):
             # Reset environment and get initial state, might have to reshape
             curr_state = env.reset()
             y_init = curr_state[0]*MAX_CTE
-            psi_init = curr_state[2]*180*rad2deg
+            psi_init = curr_state[2]*180
 
             while not done and step < STEPS:
 
