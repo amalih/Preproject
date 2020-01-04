@@ -178,10 +178,10 @@ class DQN_Agent:
     def evaluate(self, ep):
 
         psi_array = [math.pi/2, -math.pi/5, 0, math.pi/6, 0]
-        psi_c_array = [-20, -5, 10, 30, 0]
-        #psi_c_array = [0,0,0,0,0]
+        #psi_c_array = [-20, -5, 10, 30, 0]
+        psi_c_array = [0,0,0,0,0]
         #dist_array = [-50, 75, -100, 150, 0]
-        dist_array = [-50, 25, -10, 50, 0]
+        dist_array = [-100, 50, -200, 150, 0]
         average_reward = 0
 
         for i in range(len(psi_array)):
