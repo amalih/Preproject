@@ -154,7 +154,6 @@ class ContainerEnv(gym.Env):
         psi_init = random.uniform(psi_c_init-MAX_INIT_PSI, psi_c_init+MAX_INIT_PSI)
         delta_init = random.uniform(-MAX_DELTA/5, MAX_DELTA/5)
 
-        #psi_c_init = 0
         self.ct_error_array = [y_init]
         self.pf_psi_array = [psi_init-psi_c_init]
 
