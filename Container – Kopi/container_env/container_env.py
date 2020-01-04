@@ -221,8 +221,8 @@ class ContainerEnv(gym.Env):
         ct_error_d_norm = self.ct_error_d/SPEED
         pf_psi_norm = self.pf_psi/math.pi
         pf_r_std = self.r*100
-        #u_norm = self.u/SPEED
-        #v_norm = self.v/SPEED
+        u_norm = self.u/SPEED
+        v_norm = self.v/SPEED
 
         obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std u_norm, v_norm]
         #print(obs)
@@ -231,8 +231,6 @@ class ContainerEnv(gym.Env):
 
     def _take_action(self, action_idx):
         delta_c = actions[action_idx]*deg2rad
-        #delta_c = -10*deg2rad
-        #delta_c = 0
         ct_error_prev = self.ct_error
 
         self.ct_error,self.pf_psi, self.r, self.u, self.v = self.controller.autopilot(self.ship, self.psi_c, delta_c)
