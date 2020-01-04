@@ -16,7 +16,7 @@ from collections import deque
 import time
 import random
 import os
-from PIL import Image
+#from PIL import Image
 
 
 # Constants
@@ -26,23 +26,24 @@ m2km = 1/1000
 
 DISCOUNT = 0.9
 REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
-MINIBATCH_SIZE = 256 # How many steps (samples) to use for training
+MIN_REPLAY_MEMORY_SIZE = 64 # Minimum number of steps in a memory to start training
+MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Nomoto-Eps015-Epochs1-Eps5000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256'
+MODEL_NAME = '1O_Nomoto-Eps02_01-Epochs1-Eps4000_1000-Steps1500-linear-CNN_300_200-YEMAX2000-LR0001-Outputs27-UpdateTarget1-Bell20-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 23
-#MODEL_FILE = 'models/Nomoto-Eps025_010_005-Epochs3-Eps2000_2000_2000-Steps1500-linear-CNN_400_300-YEMAX250-LR0001-Outputs23-UpdateTarget1-Triangle10-MB256__1256.46max__164.36avg___-1.00min__1576707607.model'
+ACTION_SPACE_VALUES = 27
+MODEL_FILE = 'models/1O_Nomoto-Eps03_02_01-Epochs3-Eps1000_2000_2000-Steps1500-linear-CNN_200_100-YEMAX800-LR0001-Outputs29-UpdateTarget1-Triangle10-MB64__1381.26max__136.51avg___-1.00min__1577943432.model'
 
 # Environment settings
 EPISODE_START = 0#3350
 #EPISODES = [2000, 2000, 2000]
-EPISODES = [5000]
+EPISODES = [4000,1000]
 EPOCHS = 1
 
+MAX_CTE = 2000
 # Exploration settings
-EPSILON = [0.15]
+EPSILON = [0.2,0.1]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.01
@@ -115,9 +116,9 @@ class DQN_Agent:
 
         model = Sequential()
 
-        model.add(Dense(400, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
+        model.add(Dense(300, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
         #model.add(BatchNormalization())
-        model.add(Dense(300, activation='relu'))
+        model.add(Dense(200, activation='relu'))
         #model.add(Dense(100, activation='relu'))
         model.add(Flatten())
         model.add(Dense(ACTION_SPACE_VALUES, activation='linear'))
@@ -177,8 +178,8 @@ class DQN_Agent:
     def evaluate(self, ep):
 
         psi_array = [math.pi/2, -math.pi/5, 0, math.pi/6, 0]
-        #psi_c_array = [-20, -5, 10, 30, 0]
-        psi_c_array = [0,0,0,0,0]
+        psi_c_array = [-20, -5, 10, 30, 0]
+        #psi_c_array = [0,0,0,0,0]
         #dist_array = [-50, 75, -100, 150, 0]
         dist_array = [-50, 25, -10, 50, 0]
         average_reward = 0
@@ -219,7 +220,7 @@ def run_experiment(agent):
 
             if epoch > 0:
                 for i in range(epoch):
-                    prev_eps += EPISODES[epoch]
+                    prev_eps += EPISODES[i]
             curr_ep = EPISODE_START + prev_eps + episode
 
             # Update tensorboard step every episode
@@ -232,7 +233,7 @@ def run_experiment(agent):
 
             # Reset environment and get initial state, might have to reshape
             curr_state = env.reset()
-            y_init = curr_state[0]*200
+            y_init = curr_state[0]*MAX_CTE
             psi_init = curr_state[2]*180
 
             while not done and step < STEPS:
@@ -255,6 +256,8 @@ def run_experiment(agent):
                 curr_state = new_state
                 step += 1
 
+            print(f'Episode: {curr_ep} -- (psi: {psi_init}, y: {y_init}) ---- Episode reward: {episode_reward} -- Epsilon: {epsilon}')
+
             if not episode%SHOW_EVERY and SHOW_PREVIEW:
                 env.render()
 
@@ -263,7 +266,7 @@ def run_experiment(agent):
 
             ep_rewards.append(episode_reward)
 
-            print(f'Episode: {curr_ep} -- (psi: {psi_init}, y: {y_init}) ---- Episode reward: {episode_reward} -- Epsilon: {epsilon}')
+
 
 
             if (not episode%AGGREGATE_STATS_EVERY):
