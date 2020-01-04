@@ -150,6 +150,7 @@ class ContainerEnv(gym.Env):
         x_init = 0
         y_init = random.randint(-MAX_INIT_CTE, MAX_INIT_CTE)
         psi_c_init = random.uniform(-90*deg2rad, 90*deg2rad)
+        print(f'Psi_c_init: {psi_c_init}')
         psi_init = random.uniform(psi_c_init-MAX_INIT_PSI, psi_c_init+MAX_INIT_PSI)
         delta_init = random.uniform(-MAX_DELTA/5, MAX_DELTA/5)
 
