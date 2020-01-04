@@ -26,12 +26,12 @@ m2km = 1/1000
 
 DISCOUNT = 0.9
 REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 264 #inimum number of steps in a memory to start training
-MINIBATCH_SIZE = 264 # How many steps (samples) to use for training
+MIN_REPLAY_MEMORY_SIZE = 16 #inimum number of steps in a memory to start training
+MINIBATCH_SIZE = 16 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Container-Eps02_01-Epochs2-Eps2000_2000-Steps1500-linear-CNN_400_300-YEMAX2000-LR0001-Inputs4-Outputs27-UpdateTarget1-Bell20-MB264'
+MODEL_NAME = 'Container-Eps02_01-Epochs2-Eps2000_2000-Steps1500-linear-CNN_400_300-YEMAX2000-LR0001-Inputs6-Outputs27-UpdateTarget1-Bell20-MB16'
 MIN_REWARD = 0  # For model save
-OBSERVATION_SPACE_VALUES = 4
+OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 27
 MODEL_FILE = 'xx'
 
