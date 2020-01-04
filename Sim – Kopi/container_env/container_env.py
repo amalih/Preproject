@@ -149,7 +149,7 @@ class ContainerEnv(gym.Env):
 
         x_init = 0
         y_init = random.randint(-MAX_INIT_CTE, MAX_INIT_CTE)
-        psi_c_init = random.uniform(-90*deg2rad, 90*deg2rad)
+        psi_c_init = 0#random.uniform(-90*deg2rad, 90*deg2rad)
         print(f'Psi_c_init: {psi_c_init*rad2deg}')
         psi_init = random.uniform(psi_c_init-MAX_INIT_PSI, psi_c_init+MAX_INIT_PSI)
         delta_init = random.uniform(-MAX_DELTA/5, MAX_DELTA/5)
@@ -256,13 +256,13 @@ class ContainerEnv(gym.Env):
             return -1
 
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/2: #and abs(self.ct_error) < 10:
+        if abs(self.pf_psi) < math.pi/2 and abs(self.ct_error) < 10:
 
-            std = 20
-            amp = 1
-            reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
+            #std = 20
+            #amp = 1
+            #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-            #reward = 1-(1/10)*abs(self.ct_error)
+            reward = 1-(1/10)*abs(self.ct_error)
 
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
