@@ -33,7 +33,7 @@ MODEL_NAME = '1O_Nomoto-Eps02_01-Epochs1-Eps4000_1000-Steps1500-linear-CNN_300_2
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 27
-MODEL_FILE = '1O_Nomoto-Eps02_01-Epochs2-Eps4000_1000-Steps1500-linear-CNN_300_200-YEMAX2000-LR0001-Outputs27-UpdateTarget1-Bell20-MB64__1498.69max__278.55avg___-1.00min__1578165220.model'
+MODEL_FILE = 'models/1O_Nomoto-Eps02_01-Epochs2-Eps4000_1000-Steps1500-linear-CNN_300_200-YEMAX2000-LR0001-Outputs27-UpdateTarget1-Bell20-MB64__1498.69max__278.55avg___-1.00min__1578165220.model'
 
 # Environment settings
 EPISODE_START = 2000
