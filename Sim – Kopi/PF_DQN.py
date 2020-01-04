@@ -199,7 +199,7 @@ class DQN_Agent:
                 ep_reward += reward
                 step += 1
 
-            print(f'Evaluative reward for psi = {psi_array[i]} and starting position in y = {dist_array[i]} was: {ep_reward}')
+            print(f'Evaluative reward for psi = {psi_array[i]-psi_c_array[i]} and starting position in y = {dist_array[i]} was: {ep_reward}')
 
         return average_reward/len(psi_array)
 
