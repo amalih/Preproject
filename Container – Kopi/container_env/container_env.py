@@ -224,7 +224,7 @@ class ContainerEnv(gym.Env):
         u_norm = self.u/SPEED
         v_norm = self.v/SPEED
 
-        obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std u_norm, v_norm]
+        obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std, u_norm, v_norm]
         #print(obs)
 
         return obs
