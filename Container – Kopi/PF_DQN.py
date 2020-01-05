@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import math
@@ -26,18 +25,18 @@ m2km = 1/1000
 
 DISCOUNT = 0.9
 REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
-MIN_REPLAY_MEMORY_SIZE = 256 #inimum number of steps in a memory to start training
-MINIBATCH_SIZE = 256 # How many steps (samples) to use for training
+MIN_REPLAY_MEMORY_SIZE = 64 #inimum number of steps in a memory to start training
+MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Container-Eps02_01-Epochs2-Eps2000_2000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs27-UpdateTarget1-Bell20-MB256'
+MODEL_NAME = 'Container-Eps02_01-Epochs2-Eps3000_2000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs23-UpdateTarget1-Bell20-Triangle10-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 27
-MODEL_FILE = 'xx'
+ACTION_SPACE_VALUES = 23
+MODEL_FILE = 'models/Container-Eps02_01-Epochs2-Eps3000_2000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs27-UpdateTarget1-Bell20-MB64___206.96max___22.49avg___-1.00min__1578230182.model'
 
 # Environment settings
 EPISODE_START = 0
-EPISODES = [2000,2000]
+EPISODES = [3000,2000]
 EPOCHS = 2
 
 MAX_CTE = 2000
@@ -50,7 +49,7 @@ LEARNING_RATE = 0.001
 
 
 #  Stats settings
-AGGREGATE_STATS_EVERY = 50  # episodes
+AGGREGATE_STATS_EVERY = 50 # episodes
 SHOW_PREVIEW = False
 SHOW_EVERY = 1
 SAVE_MODEL = True
