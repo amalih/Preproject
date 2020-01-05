@@ -227,7 +227,7 @@ class ContainerEnv(gym.Env):
         v_norm = self.v/SPEED
 
         obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std, u_norm, v_norm]
-        print(obs)
+
         return obs
 
     def _take_action(self, action_idx):
