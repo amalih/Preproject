@@ -32,7 +32,7 @@ UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
 MODEL_NAME = '1O_Nomoto-Eps02_01-Epochs2-Eps3000_1000-Steps1000-linear-CNN_300_200-YEMAX2000-LR001-Outputs21-UpdateTarget1-Bell20-MB32'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 27
+ACTION_SPACE_VALUES = 21
 MODEL_FILE = 'models/1O_Nomoto-Eps02_01-Epochs1-Eps4000_1000-Steps1500-linear-CNN_300_200-YEMAX2000-LR0001-Outputs27-UpdateTarget1-Bell20-MB64__1498.69max__278.55avg___-1.00min__1578165220.model'
 
 # Environment settings
