@@ -29,7 +29,7 @@ REPLAY_MEMORY_SIZE = 100_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 64 # Minimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = '1O_Nomoto-Eps02_01-Epochs2-Eps3000_1000-Steps1000-linear-CNN_400_300-YEMAX1000-LR01-Outputs21-UpdateTarget1-Bell20-MB64'
+MODEL_NAME = '1O_Nomoto-Eps02_01-Epochs2-Eps3000_1000-Steps1000-linear-CNN_200_100-YEMAX1000-LR0001-Outputs21-UpdateTarget1-Bell20-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 21
@@ -47,7 +47,7 @@ EPSILON = [0.2,0.1]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.01
-LEARNING_RATE = 0.1
+LEARNING_RATE = 0.001
 
 
 #  Stats settings
@@ -116,9 +116,9 @@ class DQN_Agent:
 
         model = Sequential()
 
-        model.add(Dense(400, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
+        model.add(Dense(200, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
         #model.add(BatchNormalization())
-        model.add(Dense(300, activation='relu'))
+        model.add(Dense(100, activation='relu'))
         #model.add(Dense(100, activation='relu'))
         model.add(Flatten())
         model.add(Dense(ACTION_SPACE_VALUES, activation='linear'))
