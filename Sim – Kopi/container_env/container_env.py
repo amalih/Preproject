@@ -21,7 +21,7 @@ actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.1,0,0.1,0.5,1,2,3,4,5,6,8,10]
 # Limiting constants
 MAX_DELTA = 10*deg2rad
 MAX_DELTA_D = 5*deg2rad
-MAX_CTE = 2000
+MAX_CTE = 1000
 MAX_INIT_CTE = 200
 MAX_INIT_PSI = math.pi/2
 
