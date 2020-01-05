@@ -13,7 +13,7 @@ rad2deg = 180/math.pi
 m2km = 1/1000
 
 # Simulation
-h = 1
+h = 0.5
 
 actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.1,0,0.1,0.5,1,2,3,4,5,6,8,10]
 
@@ -255,14 +255,15 @@ class ContainerEnv(gym.Env):
             return -1
 
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/2:# and abs(self.ct_error) < 10:
+        if abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
+            reward = 1-(1/10)*abs(self.ct_error)
 
-            std = 20
-            amp = 1
-            reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-           # reward = 1-(1/10)*abs(self.ct_error)
+            #std = 20
+           # amp = 1
+            #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
+           
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
 
