@@ -1,5 +1,4 @@
 
-
 import matplotlib.pyplot as plt
 import math
 import numpy as np
@@ -15,8 +14,8 @@ m2km = 1/1000
 # Simulation
 h = 0.5
 
-actions = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.5,-0.25,-0.1,0,0.1,0.25,0.5,1,2,3,4,5,6,7,8,9,10] #27
-#actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.25,-0.1,0,0.1,0.25,0.5,1,2,3,4,5,6,8,10] #23
+#actions = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.5,-0.25,-0.1,0,0.1,0.25,0.5,1,2,3,4,5,6,7,8,9,10] #27
+actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.25,-0.1,0,0.1,0.25,0.5,1,2,3,4,5,6,8,10] #23
 
 # Limiting constants
 MAX_DELTA = 10*deg2rad
@@ -156,6 +155,7 @@ class ContainerEnv(gym.Env):
         x_init = 0
         y_init = random.randint(-MAX_INIT_CTE, MAX_INIT_CTE)
         psi_init = random.uniform(-MAX_INIT_PSI, MAX_INIT_PSI)
+        delta_init = random.uniform(-MAX_DELTA/5, MAX_DELTA/5)
         psi_c_init = 0#random.uniform(-MAX_INIT_PSI, MAX_INIT_PSI)
         self.pf_psi_array = [psi_init]
         self.ct_error_array = [y_init]
@@ -173,7 +173,7 @@ class ContainerEnv(gym.Env):
 
         self.psi_c = psi_c_init
 
-        self.ship = Ship(x_init, y_init, psi_init)
+        self.ship = Ship(x_init, y_init, psi_init, delta_init)
         self.controller = Controller(self.ship)
 
         self.ct_error_d = 0
@@ -202,7 +202,7 @@ class ContainerEnv(gym.Env):
         self.ct_error = y_init
         self.psi_c = psi_c
 
-        self.ship = Ship(x_init, y_init, psi_init)
+        self.ship = Ship(x_init, y_init, psi_init,psi_c)
         self.controller = Controller(self.ship)
 
         self.ct_error_d = 0
@@ -231,6 +231,8 @@ class ContainerEnv(gym.Env):
 
     def _take_action(self, action_idx):
         delta_c = actions[action_idx]*deg2rad
+        #delta_c = -10*deg2rad
+        #delta_c = 0
         ct_error_prev = self.ct_error
 
         self.ct_error,self.pf_psi, self.r, self.u, self.v = self.controller.autopilot(self.ship, self.psi_c, delta_c)
@@ -251,13 +253,13 @@ class ContainerEnv(gym.Env):
             return -1
 
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/2:# and abs(self.ct_error) < 20:
+        if abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
 
-            std = 20
-            amp = 1
-            reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
+            #std = 20
+            #amp = 1
+            #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-            #reward = 1-(1/20)*abs(self.ct_error)
+            reward = 1-(1/10)*abs(self.ct_error)
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
             #if self.ct_error_d > 0:
@@ -276,7 +278,7 @@ class ContainerEnv(gym.Env):
         return
 
 class Ship(object):
-    def __init__(self, x_init, y_init, psi_init):
+    def __init__(self, x_init, y_init, psi_init, delta_init):
 
         # Position and heading in NED frame
         self.xpos = x_init
@@ -290,7 +292,7 @@ class Ship(object):
         self.time  = 0
 
 
-        self.container_state = [SPEED, 0, 0, x_init, y_init, psi_init, 0, 0,0, SHAFT_VEL]
+        self.container_state = [SPEED, 0, 0, x_init, y_init, psi_init, 0, 0,delta_init, SHAFT_VEL]
 
 class Controller(object):
     def __init__(self, ship):
@@ -353,4 +355,3 @@ class Controller(object):
         ship.ypos_array.append(ship.ypos)
 
         return ypos_p, ship.psi-psi_c, ship.r, x_dot, y_dot
-
