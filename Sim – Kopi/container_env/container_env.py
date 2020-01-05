@@ -22,7 +22,7 @@ actions = [-10,-9,-8,-7,-6,-5,-4,-3,-2,-1,-0.5,-0.25,-0.1,0,0.1,0.25,0.5,1,2,3,4
 MAX_DELTA = 10*deg2rad
 MAX_DELTA_D = 5*deg2rad
 MAX_CTE = 2000
-MAX_INIT_CTE = 500
+MAX_INIT_CTE = 200
 MAX_INIT_PSI = math.pi/2
 
 # speed
@@ -227,7 +227,7 @@ class ContainerEnv(gym.Env):
         v_norm = self.v/SPEED
 
         obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std, u_norm, v_norm]
-
+        print(obs)
         return obs
 
     def _take_action(self, action_idx):
@@ -255,13 +255,13 @@ class ContainerEnv(gym.Env):
             return -1
 
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/2 and abs(self.ct_error) < 10:
+        if abs(self.pf_psi) < math.pi/2:# and abs(self.ct_error) < 10:
 
-            #std = 20
-            #amp = 1
-            #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
+            std = 20
+            amp = 1
+            reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-            reward = 1-(1/10)*abs(self.ct_error)
+           # reward = 1-(1/10)*abs(self.ct_error)
 
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
