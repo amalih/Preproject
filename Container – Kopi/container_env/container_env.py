@@ -25,8 +25,8 @@ MAX_INIT_CTE = 200
 MAX_INIT_PSI = math.pi/2
 
 # speed
-SPEED = 7
-SHAFT_VEL = 70
+SPEED = 3
+SHAFT_VEL = 30
 OFFSET = 0
 
 def rot_matrix(alpha):
