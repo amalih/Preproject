@@ -28,7 +28,7 @@ REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 64 #inimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'Container-Eps02_01-Epochs2-Eps3000_2000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs23-UpdateTarget1-Bell20-Triangle10-MB64'
+MODEL_NAME = 'Container-Eps08dec-Epochs1-Eps5000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs21-UpdateTarget1-Triangle10-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
 ACTION_SPACE_VALUES = 23
@@ -36,15 +36,15 @@ MODEL_FILE = 'models/Container-Eps02_01-Epochs2-Eps3000_2000-Steps1500-linear-CN
 
 # Environment settings
 EPISODE_START = 0
-EPISODES = [3000,2000]
+EPISODES = [5000]
 EPOCHS = 2
 
 MAX_CTE = 2000
 
 # Exploration settings
-EPSILON = [0.2,0.1]  # not a constant, going to be decayed
-EPSILON_DECAY = 1
-MIN_EPSILON = 0.01
+EPSILON = [0.8]  # not a constant, going to be decayed
+EPSILON_DECAY = 0.99
+MIN_EPSILON = 0.1
 LEARNING_RATE = 0.001
 
 
@@ -283,8 +283,8 @@ def run_experiment(agent):
                         agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
 
             # Decay epsilon
-            #epsilon *= EPSILON_DECAY
-            #epsilon = max(MIN_EPSILON, epsilon)
+            epsilon *= EPSILON_DECAY
+            epsilon = max(MIN_EPSILON, epsilon)
 
 
 
