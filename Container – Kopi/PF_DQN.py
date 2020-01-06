@@ -31,13 +31,13 @@ UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
 MODEL_NAME = 'Container-Eps08dec-Epochs1-Eps5000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs21-UpdateTarget1-Triangle10-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 6
-ACTION_SPACE_VALUES = 23
+ACTION_SPACE_VALUES = 21
 MODEL_FILE = 'models/Container-Eps02_01-Epochs2-Eps3000_2000-Steps1500-linear-CNN_400_300_100-YEMAX2000-LR0001-Inputs6-Outputs27-UpdateTarget1-Bell20-MB64___206.96max___22.49avg___-1.00min__1578230182.model'
 
 # Environment settings
 EPISODE_START = 0
 EPISODES = [5000]
-EPOCHS = 2
+EPOCHS = 1
 
 MAX_CTE = 2000
 
