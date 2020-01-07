@@ -18,7 +18,7 @@ deg2rad = math.pi/180
 
 
 env = gym.make('ContainerEnv-v0')
-model = load_model('models/COLAV200_Nomoto-Eps03_01-Epochs2-Eps1000_3000-Steps1000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64___113.27max___25.18avg__-60.44min__1578389122.model')
+model = load_model('models/COLAV200_Nomoto-Eps08dec-Epochs2-Eps5000-Steps2000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64___237.68max__117.22avg__-33.97min__1578431292.model')
 
 def get_qs(state):
     return model.predict(np.array(state).reshape(1,1,OBSERVATION_SPACE_VALUES))[0]
@@ -26,7 +26,7 @@ def get_qs(state):
 def evaluate():
 
 
-    enemy_array = [1000,2000,3000]
+    enemy_array = [2000,3000,4000]
 
     for i in range(len(enemy_array)):
 
