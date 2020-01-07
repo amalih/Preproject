@@ -164,6 +164,7 @@ class ContainerEnv(gym.Env):
         return obs, reward, done, {}
 
     def reset(self):
+        print('-----------------------------')
 
         x_init = 0
         y_init = 0#random.randint(-MAX_INIT_CTE, MAX_INIT_CTE)
@@ -200,8 +201,7 @@ class ContainerEnv(gym.Env):
         self.v = SPEED*math.sin(psi_init)
 
         self.enemy_y = 0
-        self.enemy_x = random.randint(2000,3000)
-        print(f'Enemy starting: {self.enemy_x}')
+        self.enemy_x = 3000
         self.enemy_xe = self.enemy_x-x_init
         self.enemy_ye = self.enemy_y-y_init
         self.enemy_ue = -ENEMY_SPEED-self.u
@@ -293,8 +293,8 @@ class ContainerEnv(gym.Env):
         self.enemy_x = self.enemy_x -ENEMY_SPEED*h
         self.enemy_y = 0
 
-        self.enemy_ye = 0 - self.ct_error
-        self.enemy_xe = self.enemy_x - xpos
+        self.enemy_ye = 0 - self.ship.ypos
+        self.enemy_xe = self.enemy_x - self.ship.xpos
 
         self.enemy_ue = -ENEMY_SPEED - self.u
         self.enemy_ve = 0 - self.v
@@ -308,6 +308,7 @@ class ContainerEnv(gym.Env):
         self.ct_error_d = (abs(self.ct_error) - abs(ct_error_prev))/h
 
         if abs(self.ct_error) > MAX_CTE:
+            print('Over max!')
             return True
         if math.sqrt(self.enemy_xe**2 + self.enemy_ye**2) < SAFE_DIST:
             print('Hit the enemy!')
