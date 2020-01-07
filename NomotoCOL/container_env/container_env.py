@@ -26,10 +26,10 @@ MAX_INIT_CTE = 500
 MAX_INIT_PSI = math.pi/4
 
 # speed
-SPEED = 4
+SPEED = 3
 ENEMY_SPEED = 2
 SAFE_DIST = 200
-MAX_ENEMY = 2000
+MAX_ENEMY = 3000
 
 def rot_matrix(alpha):
     return [[math.cos(alpha), -math.sin(alpha)], [math.sin(alpha), math.cos(alpha)]]
