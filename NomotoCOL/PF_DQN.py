@@ -94,9 +94,9 @@ class DQN_Agent:
     def __init__(self):
 
         # Main model, used for training
-        #self.model = self.create_model()
+        self.model = self.create_model()
         #self.old_model = load_model(MODEL_FILE)
-        self.model = load_model(MODEL_FILE)
+        #self.model = load_model(MODEL_FILE)
 
         #self.model.set_weights(self.old_model.get_weights())
 
