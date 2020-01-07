@@ -33,22 +33,22 @@ MODEL_NAME = 'COLAV200_Nomoto-Eps03_01-Epochs2-Eps1000_3000-Steps2000-linear-CNN
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 10
 ACTION_SPACE_VALUES = 21
-MODEL_FILE = 'models/COLAV_Nomoto-Eps08dec-Epochs1-Eps5000-Steps1000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64___198.57max__129.37avg___38.70min__1578346962.model'
+MODEL_FILE = 'models/COLAV_Nomoto-Eps08_06_04_02_01-Epochs4-Eps200_200_200_2000_2000-Steps1000-linear-CNN_300_200-YEMAX1000-LR001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64___198.57max__129.37avg___38.70min__1578346962.model'
 
 # Environment settings
 EPISODE_START =0# 4050
 #EPISODES = [2000, 2000, 2000]
 #EPISODES = [3000,1000]
-EPISODES = [1000,3000]
+EPISODES = [200,200,200,2000,2000]
 EPOCHS = 2
 
 MAX_CTE = 2000
 # Exploration settings
-EPSILON = [0.3,0.1]
+EPSILON = [0.8,0.6,0.4,0.2,0.1]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.1
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.01
 
 
 #  Stats settings
