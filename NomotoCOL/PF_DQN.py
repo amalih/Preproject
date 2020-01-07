@@ -29,7 +29,7 @@ REPLAY_MEMORY_SIZE = 100_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'COLAV_Nomoto-Eps08dec-Epochs1-Eps5000-Steps1000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
+MODEL_NAME = 'COLAV_Nomoto-Eps08dec-Epochs1-Eps5000-Steps1500-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 10
 ACTION_SPACE_VALUES = 21
@@ -54,7 +54,7 @@ AGGREGATE_STATS_EVERY = 25  # episodes
 SHOW_PREVIEW = False
 SHOW_EVERY = 1
 SAVE_MODEL = True
-STEPS = 1000
+STEPS = 1500
 
 
 # Own Tensorboard class
