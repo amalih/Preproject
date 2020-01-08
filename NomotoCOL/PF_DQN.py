@@ -29,7 +29,7 @@ REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'COLAV_Nomoto-Eps01_03after_700-Epochs2-Eps5000-Steps2000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
+MODEL_NAME = 'COLAV_Nomoto-Eps02-Epochs1-Eps5000-Steps2000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 10
 ACTION_SPACE_VALUES = 21
@@ -44,7 +44,7 @@ EPOCHS = 1
 
 MAX_CTE = 2000
 # Exploration settings
-EPSILON = [0.1]
+EPSILON = [0.2]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
 EPSILON_DECAY = 1
 MIN_EPSILON = 0.1
@@ -96,9 +96,9 @@ class DQN_Agent:
     def __init__(self):
 
         # Main model, used for training
-        self.model = self.create_model()
+        #self.model = self.create_model()
         #self.old_model = load_model(MODEL_FILE)
-        #self.model = load_model(MODEL_FILE)
+        self.model = load_model(MODEL_FILE)
 
         #self.model.set_weights(self.old_model.get_weights())
 
@@ -239,8 +239,7 @@ def run_experiment(agent):
 
             while not done and step < STEPS:
 
-                if step > 700:
-                    epsilon = 0.3
+        
 
                 if np.random.random() > epsilon:
                     # Get action from Q table
