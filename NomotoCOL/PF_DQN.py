@@ -217,6 +217,7 @@ def run_experiment(agent):
         epsilon = EPSILON[epoch]
 
         for episode in range(1, EPISODES[epoch]+1):
+            print('----------------')
             prev_eps = 0
 
             if epoch > 0:
