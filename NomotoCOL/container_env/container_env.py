@@ -275,8 +275,8 @@ class ContainerEnv(gym.Env):
         enemy_ye_norm = self.enemy_ye/MAX_ENEMY
         if abs(self.enemy_ye) > MAX_ENEMY:
             enemy_ye_norm = np.sign(self.enemy_ye)*1
-        enemy_ue_norm = self.enemy_ue/ENEMY_SPEED
-        enemy_ve_norm = self.enemy_ve/ENEMY_SPEED
+        enemy_ue_norm = self.enemy_ue/(ENEMY_SPEED+SPEED)
+        enemy_ve_norm = self.enemy_ve/(ENEMY_SPEED+SPEED)
 
 
         obs = [ct_error_norm, ct_error_d_norm, pf_psi_norm, pf_r_std, u_norm, v_norm, enemy_xe_norm, enemy_ye_norm, enemy_ue_norm, enemy_ve_norm]
@@ -288,13 +288,13 @@ class ContainerEnv(gym.Env):
         #delta_c = 10*deg2rad
         ct_error_prev = self.ct_error
 
-        self.ct_error, xpos, self.pf_psi, self.r, self.u, self.v = self.controller.autopilot(self.ship, self.psi_c, delta_c, self.u, self.v)
+        self.ct_error, self.pf_psi, self.r, self.u, self.v = self.controller.autopilot(self.ship, self.psi_c, delta_c, self.u, self.v)
 
         self.enemy_x = self.enemy_x -ENEMY_SPEED*h
         self.enemy_y = 0
 
         self.enemy_ye = 0 - self.ct_error
-        self.enemy_xe = self.enemy_x - xpos
+        self.enemy_xe = self.enemy_x - self.ship.xpos
 
         self.enemy_ue = -ENEMY_SPEED - self.u
         self.enemy_ve = 0 - self.v
@@ -467,4 +467,4 @@ class Controller(object):
         ship.ypos_array.extend([ship.ypos*m2km])
 
         #return ypos_p, ship.psi-psi_c, ship.r, x_dot_p, y_dot_p
-        return ship.ypos, ship.xpos, ship.psi-psi_c, ship.r, x_dot, y_dot
+        return ship.ypos, ship.psi-psi_c, ship.r, x_dot, y_dot
