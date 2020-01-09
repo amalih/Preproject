@@ -29,7 +29,7 @@ MAX_INIT_PSI = math.pi/4
 SPEED = 4
 ENEMY_SPEED = 2
 SAFE_DIST = 200
-MAX_ENEMY = 2000
+MAX_ENEMY = 3000
 
 def rot_matrix(alpha):
     return [[math.cos(alpha), -math.sin(alpha)], [math.sin(alpha), math.cos(alpha)]]
@@ -201,7 +201,6 @@ class ContainerEnv(gym.Env):
 
         self.enemy_y = 0
         self.enemy_x = 3000#random.randint(2000,3000)
-        print(f'Enemy starting: {self.enemy_x}')
         self.enemy_xe = self.enemy_x-x_init
         self.enemy_ye = self.enemy_y-y_init
         self.enemy_ue = -ENEMY_SPEED-self.u
