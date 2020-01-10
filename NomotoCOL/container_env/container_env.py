@@ -321,6 +321,7 @@ class ContainerEnv(gym.Env):
         
         elif abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
             reward = 1-(1/10)*abs(self.ct_error)
+            return reward
             
         elif abs(self.ct_error) > MAX_CTE:
             return -1
