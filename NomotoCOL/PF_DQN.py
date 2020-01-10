@@ -29,24 +29,22 @@ REPLAY_MEMORY_SIZE = 1_000_000  # How many last steps to keep for model training
 MIN_REPLAY_MEMORY_SIZE = 256 # Minimum number of steps in a memory to start training
 MINIBATCH_SIZE = 64 # How many steps (samples) to use for training
 UPDATE_TARGET_EVERY = 1  # Terminal states (end of episodes)
-MODEL_NAME = 'COLAV_Nomoto-Eps03_02_01-Epochs1-Eps500_500_4000-Steps1500-linear-CNN_300_200-YEMAX2000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
+MODEL_NAME = 'COLAV_Nomoto-Eps08dec-Epochs1-Eps4000-Steps1500-linear-CNN_400_300-YEMAX2000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64'
 MIN_REWARD = 0  # For model save
 OBSERVATION_SPACE_VALUES = 10
 ACTION_SPACE_VALUES = 21
 #MODEL_FILE = 'models/COLAV200_Nomoto-Eps08dec-Epochs2-Eps5000-Steps2000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs10-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64___237.68max__117.22avg__-33.97min__1578431292.model'
 
 # Environment settings
-EPISODE_START =0# 4050
-#EPISODES = [2000, 2000, 2000]
-#EPISODES = [3000,1000]
-EPISODES = [500,500,4000]
-EPOCHS = 3
+EPISODE_START =0
+EPISODES = [4000]
+EPOCHS = 1
 
 MAX_CTE = 2000
 # Exploration settings
-EPSILON = [0.3,0.2,0.1]
+EPSILON = [0.8]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
-EPSILON_DECAY = 1
+EPSILON_DECAY = 0.99
 MIN_EPSILON = 0.1
 LEARNING_RATE = 0.001
 
@@ -120,9 +118,9 @@ class DQN_Agent:
 
         model = Sequential()
 
-        model.add(Dense(300, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
+        model.add(Dense(400, input_shape=(1,OBSERVATION_SPACE_VALUES), activation='relu'))
         #model.add(BatchNormalization())
-        model.add(Dense(200, activation='relu'))
+        model.add(Dense(300, activation='relu'))
         #model.add(Dense(100, activation='relu'))
         model.add(Flatten())
         model.add(Dense(ACTION_SPACE_VALUES, activation='linear'))
@@ -240,8 +238,6 @@ def run_experiment(agent):
 
             while not done and step < STEPS:
 
-        
-
                 if np.random.random() > epsilon:
                     # Get action from Q table
                     action = np.argmax(agent.get_qs_target(curr_state))
@@ -270,8 +266,6 @@ def run_experiment(agent):
             ep_rewards.append(episode_reward)
 
 
-
-
             if (not episode%AGGREGATE_STATS_EVERY):
                 val_reward = agent.evaluate(episode)
                 val_rewards.append(val_reward)
@@ -289,10 +283,8 @@ def run_experiment(agent):
                         agent.model.save(f'models/{MODEL_NAME}__{max_reward:_>7.2f}max_{average_reward:_>7.2f}avg_{min_reward:_>7.2f}min__{int(time.time())}.model')
 
             # Decay epsilon
-            #epsilon *= EPSILON_DECAY
-            #epsilon = max(MIN_EPSILON, epsilon)
-
-
+            epsilon *= EPSILON_DECAY
+            epsilon = max(MIN_EPSILON, epsilon)
 
 
 env = gym.make('ContainerEnv-v0')
