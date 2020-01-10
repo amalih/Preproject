@@ -321,6 +321,7 @@ class ContainerEnv(gym.Env):
         if math.sqrt(self.enemy_xe**2 + self.enemy_ye**2) < SAFE_DIST:
             return -1000
         #if abs(self.pf_psi) < math.pi/2:
+        
         elif abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
             reward = 1-(1/10)*abs(self.ct_error)
             
@@ -336,7 +337,7 @@ class ContainerEnv(gym.Env):
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
 
-            return reward
+            #return reward
 
         else:
             return 0
