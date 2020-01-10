@@ -317,14 +317,15 @@ class ContainerEnv(gym.Env):
 
     def _get_reward(self, done):
 
-        if abs(self.ct_error) > MAX_CTE:
-            return -1
 
         if math.sqrt(self.enemy_xe**2 + self.enemy_ye**2) < SAFE_DIST:
-            return -100
+            return -1000
         #if abs(self.pf_psi) < math.pi/2:
-        if abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
+        elif abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
             reward = 1-(1/10)*abs(self.ct_error)
+            
+        elif abs(self.ct_error) > MAX_CTE:
+            return -1
 
 
             #std = 20
