@@ -250,7 +250,7 @@ def run_experiment(agent):
                 # Every step we update replay memory and train main network
                 agent.update_replay_memory([curr_state, action, reward, new_state, done])
                 agent.train(done)
-                print(reward)
+
                 episode_reward += reward
                 curr_state = new_state
                 step += 1
