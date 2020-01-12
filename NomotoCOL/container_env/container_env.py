@@ -29,7 +29,7 @@ MAX_INIT_PSI = math.pi/4
 SPEED = 4
 ENEMY_SPEED = 2
 SAFE_DIST = 200
-MAX_ENEMY = 3000
+MAX_ENEMY = 2500
 
 def rot_matrix(alpha):
     return [[math.cos(alpha), -math.sin(alpha)], [math.sin(alpha), math.cos(alpha)]]
@@ -317,7 +317,7 @@ class ContainerEnv(gym.Env):
 
     def _get_reward(self, done):
         if math.sqrt(self.enemy_xe**2 + self.enemy_ye**2) < SAFE_DIST:
-            return -1000
+            return -100
         
         elif abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
             reward = 1-(1/10)*abs(self.ct_error)
