@@ -13,7 +13,7 @@ rad2deg = 180/math.pi
 m2km = 1/1000
 
 # Simulation
-h = 0.5
+h = 1
 
 actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.1,0,0.1,0.5,1,2,3,4,5,6,8,10]
 
@@ -21,13 +21,13 @@ actions = [-10,-8,-6,-5,-4,-3,-2,-1,-0.5,-0.1,0,0.1,0.5,1,2,3,4,5,6,8,10]
 # Limiting constants
 MAX_DELTA = 10*deg2rad
 MAX_DELTA_D = 5*deg2rad
-MAX_CTE = 1000
-MAX_INIT_CTE = 200
+MAX_CTE = 2000
+MAX_INIT_CTE = 500
 MAX_INIT_PSI = math.pi/2
 
 # speed
-SPEED = 7
-SHAFT_VEL = 70
+SPEED = 4
+
 
 def rot_matrix(alpha):
     return [[math.cos(alpha), -math.sin(alpha)], [math.sin(alpha), math.cos(alpha)]]
@@ -49,63 +49,66 @@ def map_to_negpi_pi(angle):
     return angle
 
 
-def plot(ship, controller, psi_c, ct_error_array):
-
+def plot(ship, controller, psi_c, ct_error_array, rewards):
+    params = {'backend': 'ps',
+    'axes.labelsize': 22,
+    'font.size': 22,
+    'legend.fontsize': 22,
+    'xtick.labelsize': 22,
+    'ytick.labelsize': 22,
+    'text.usetex': True}
+    plt.rcParams.update(params)
+    #plt.figure(1)
     plt.figure(1)
-    plt.subplot(311)
 
-    #params = {'backend': 'ps',
-    #  'axes.labelsize': 12,
-    #  'font.size': 12,
-    #  'legend.fontsize': 12,
-    #  'xtick.labelsize': 10,
-    #  'ytick.labelsize': 10,
-    #  'text.usetex': True}
-    #plt.rcParams.update(params)
 
     #plt.plot([0,10_000], [0, 0])
+    plt.grid(True, color='lightgrey')
+    #plt.title(r"$\mathrm{Position \, of \, ship}$",fontweight="bold")
+    plt.xlabel(r"$x \, \mathrm{(north) \, [km]}$",fontweight="bold")
+    plt.ylabel(r"$y \, \mathrm{(east) \, [km]}$",fontweight="bold")
 
-    plt.plot(ship.xpos_array, ship.ypos_array)
+    plt.plot(ship.xpos_array, ship.ypos_array, color='midnightblue', linewidth=0.8)
     #plt.plot([x*m2km for x in self.xpos_array], [y*m2km for y in self.ypos_array])
     #plt.plot([0, 7_000], [0, 0], linestyle='--')
 
-    plt.title("Position of ship",
-              fontsize=12,fontweight="bold")
-    plt.xlabel("X position [km]",fontsize=10,fontweight="bold")
-    plt.ylabel("Y position [km]",fontsize=10,fontweight="bold")
+    plt.plot([0, 8*math.cos(psi_c)], [0, 8*math.sin(psi_c)], '--', linewidth=0.8, color='k')
+    plt.show()
+
+    #plt.xlim(0,4)
+    #plt.ylim(-4,4)
 
 
-    plt.plot([0, 4*math.cos(psi_c)], [0, 4*math.sin(psi_c)])
+    plt.figure(2)
 
-    plt.xlim(0,4)
-    plt.ylim(-4,4)
+    plt.grid(True, color='lightgrey')
+    #plt.title(r"$\mathrm{Control \, input}$",fontweight="bold")
+    plt.xlabel(r"$\mathrm{Steps}$",fontweight="bold")
+    plt.ylabel(r"$\mathrm{Rudder \, angle \, [deg]}$",fontweight="bold")
+    plt.plot(controller.time_array, controller.action_array, color='midnightblue', linewidth=0.8)
+    plt.show()
 
+    plt.figure(3)
 
-    plt.subplot(312)
-    #params = {'backend': 'ps',
-    #  'axes.labelsize': 12,
-    #  'font.size': 12,
-    #  'legend.fontsize': 12,
-    #  'xtick.labelsize': 10,
-    #  'ytick.labelsize': 10,
-    #  'text.usetex': True}
-    #plt.rcParams.update(params)
-    plt.title("Control input",
-              fontsize=12,fontweight="bold")
-    plt.xlabel("Episode",fontsize=10,fontweight="bold")
-    plt.ylabel("Rudder angle [deg]",fontsize=10,fontweight="bold")
-    plt.plot(controller.time_array, controller.action_array)
+    plt.grid(True, color='lightgrey')
 
-    plt.subplot(313)
+    plt.plot([i*m2km for i in ct_error_array], color='midnightblue', linewidth=0.8)
+    #plt.title(r"$\mathrm{Cross-track \, error}$",fontweight="bold")
+    plt.xlabel(r"$\mathrm{Steps}$",fontweight="bold")
+    plt.ylabel(r"$y_e \, \mathrm{[km]}$",fontweight="bold")
 
-    plt.plot(ct_error_array)
+    plt.show()
 
+    plt.figure(4)
 
+    plt.grid(True, color='lightgrey')
 
-    #plt.subplot(414)
+    plt.plot(rewards, color='midnightblue', linewidth=0.8)
+    #plt.title(r"$\mathrm{Reward}$",fontweight="bold")
+    plt.ylabel(r"$\mathrm{Reward}$",fontweight="bold")
 
-    #plt.plot(ship.psi_array)
-    #plt.plot(pf_psi_array)
+    plt.xlabel(r"$\mathrm{Steps}$",fontweight="bold")
+
 
     plt.show()
 
@@ -136,6 +139,7 @@ class ContainerEnv(gym.Env):
         self.v = 0
         self.ct_error_array = []
         self.pf_psi_array = []
+        self.rewards = []
 
 
     def step(self, action):
@@ -143,19 +147,19 @@ class ContainerEnv(gym.Env):
         done = self._take_action(action)
         obs = self._get_obs()
         reward = self._get_reward(done)
+        self.rewards.append(reward)
         return obs, reward, done, {}
 
     def reset(self):
 
         x_init = 0
         y_init = random.randint(-MAX_INIT_CTE, MAX_INIT_CTE)
-        psi_c_init = 0#random.uniform(-90*deg2rad, 90*deg2rad)
-        print(f'Psi_c_init: {psi_c_init*rad2deg}')
+        psi_c_init = random.uniform(-90*deg2rad, 90*deg2rad)
+
         psi_init = random.uniform(psi_c_init-MAX_INIT_PSI, psi_c_init+MAX_INIT_PSI)
         delta_init = random.uniform(-MAX_DELTA/5, MAX_DELTA/5)
 
-        self.ct_error_array = [y_init]
-        self.pf_psi_array = [psi_init-psi_c_init]
+        self.d_prev = delta_init
 
 
         rot = rot_matrix(psi_c_init)
@@ -167,7 +171,6 @@ class ContainerEnv(gym.Env):
 
         # Position in path fixed frame (rotation)
         self.ct_error = rot_T[1][0]*pf_pos[0] + rot_T[1][1]*pf_pos[1]
-        #self.ct_error = y_init
 
         self.psi_c = psi_c_init
         self.ship = Ship(x_init, y_init, psi_init,delta_init)
@@ -175,19 +178,17 @@ class ContainerEnv(gym.Env):
 
         self.ct_error_d = 0
         self.pf_psi = psi_init-psi_c_init
-        #self.pf_psi = psi_init
+
+        self.d_dot = 0
+
         self.r = 0
         self.u = SPEED*math.cos(psi_init)
         self.v = SPEED*math.sin(psi_init)
-        #self.pf_u = SPEED*math.cos(psi_init-psi_c_init)
-        #self.pf_v = SPEED*math.sin(psi_init-psi_c_init)
+
 
         return self._get_obs()
 
     def init_eval(self, y_init, psi_init, psi_c):
-        self.ct_error_array = [y_init]
-        self.pf_psi_array = [psi_init]
-
 
         rot = rot_matrix(psi_c)
         rot_T = transpose2D(rot)
@@ -199,21 +200,30 @@ class ContainerEnv(gym.Env):
 
         # Position in path fixed frame (rotation)
         self.ct_error  = rot_T[1][0]*pf_pos[0] + rot_T[1][1]*pf_pos[1]
-        #self.ct_error = y_init
+
         self.psi_c = psi_c
         delta_init = 0
+        self.d_prev = delta_init
 
         self.ship = Ship(x_init, y_init, psi_init,delta_init)
         self.controller = Controller(self.ship)
 
         self.ct_error_d = 0
         self.pf_psi = psi_init-psi_c
-        #self.pf_psi = psi_init
+
         self.r = 0
-        #self.pf_u = SPEED*math.cos(psi_init-psi_c)
-        #self.pf_v = SPEED*math.sin(psi_init-psi_c)
+        self.d_dot = 0
+
         self.u = SPEED*math.cos(psi_init)
         self.v = SPEED*math.sin(psi_init)
+
+        #self.ct_error_array.append(self.ct_error)
+        #self.pf_psi_array.append(psi_init)
+
+        self.ct_error_array = [self.ct_error]
+        self.pf_psi_array = [self.pf_psi]
+        self.rewards = []
+
 
         return self._get_obs()
 
@@ -233,6 +243,8 @@ class ContainerEnv(gym.Env):
     def _take_action(self, action_idx):
         delta_c = actions[action_idx]*deg2rad
 
+        self.d_dot = (delta_c - self.d_prev)/h
+
         ct_error_prev = self.ct_error
 
         self.ct_error, self.pf_psi, self.r, self.u, self.v = self.controller.autopilot(self.ship, self.psi_c, delta_c, self.u, self.v)
@@ -242,6 +254,8 @@ class ContainerEnv(gym.Env):
         self.ct_error_array.append(self.ct_error)
 
         self.ct_error_d = (abs(self.ct_error) - abs(ct_error_prev))/h
+
+        self.d_prev = delta_c
 
         if abs(self.ct_error) > MAX_CTE:
             return True
@@ -256,14 +270,15 @@ class ContainerEnv(gym.Env):
 
         #if abs(self.pf_psi) < math.pi/2:
         if abs(self.pf_psi) < math.pi/4 and abs(self.ct_error) < 10:
-            reward = 1-(1/10)*abs(self.ct_error)
+            reward = 1-(1/10)*abs(self.ct_error) - 10*(self.d_dot**2)
+
 
 
             #std = 20
            # amp = 1
             #reward = amp * math.e**(-(self.ct_error**2)/(2*std**2))
 
-           
+
         #    if self.ct_error_d >= 0:
         #        reward = reward/10
 
@@ -275,7 +290,7 @@ class ContainerEnv(gym.Env):
 
     def render(self, mode='container_vessel', close=False):
 
-        plot(self.ship, self.controller, self.psi_c, self.ct_error_array)
+        plot(self.ship, self.controller, self.psi_c, self.ct_error_array, self.rewards)
 
         return
 
@@ -288,9 +303,9 @@ class Ship(object):
         self.psi = psi_init
         self.r = 0
 
-        self.psi_array = []
-        self.ypos_array = []
-        self.xpos_array = []
+        self.psi_array = [psi_init]
+        self.ypos_array = [ypos_init*m2km]
+        self.xpos_array = [xpos_init*m2km]
         self.time  = 0
 
         self.delta = delta_init
