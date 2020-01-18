@@ -37,17 +37,17 @@ MODEL_FILE = 'models/1O_Nomoto-Eps08dec-Epochs1-Eps8000-Steps2000-linear-CNN_300
 #MODEL_FILE = 'models/1O_Nomoto-Eps08dec-Epochs1-Eps5000-Steps1000-linear-CNN_300_200-YEMAX1000-LR0001-Inputs6-Outputs21-UpdateTarget1-Triangle10_Pi4-MB64_PsiCVar___939.53max__188.82avg___-1.00min__1578335158.model'
 
 # Environment settings
-EPISODE_START = 550
+EPISODE_START = 0
 #EPISODES = [2000, 2000, 2000]
 #EPISODES = [3000,1000]
-EPISODES = [7450]
+EPISODES = [5000]
 EPOCHS = 1
 
 MAX_CTE = 2000
 # Exploration settings
-EPSILON = [0.1]
+EPSILON = [0.8]
 #EPSILON = [0.25,0.10,0.05]  # not a constant, going to be decayed
-EPSILON_DECAY = 1
+EPSILON_DECAY = 0.99
 MIN_EPSILON = 0.1
 LEARNING_RATE = 0.001
 
